@@ -8,7 +8,7 @@ const duration = 15;
 const out = process.argv[2] ?? "media-search-demo.mp4";
 
 const browser = await chromium.launch();
-const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
+const page = await browser.newPage({ viewport: { width: 1080, height: 1080 } });
 await page.goto(pathToFileURL(path.resolve("demo/index.html")).href);
 
 const ff = spawn("ffmpeg", ["-y", "-f", "image2pipe", "-framerate", String(fps), "-i", "-", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "16", out], { stdio: ["pipe", "inherit", "inherit"] });
@@ -23,3 +23,4 @@ for (let f = 0; f < frames; f++) {
 ff.stdin.end();
 await new Promise(r => ff.on("close", r));
 await browser.close();
+
