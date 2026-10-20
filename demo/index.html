@@ -257,6 +257,7 @@ function touch(t, list) {
 
 const QUERY = "Jane's dog";
 function render(t) {
+  itX.length = 0; let ax = 4; pits.forEach(e => { itX.push([ax, e.offsetWidth]); ax += e.offsetWidth; });
   const pp = pushProgress(t);
   const camTop = lerp(441, 0, sys(seg(t, 2.4, 3.2))) + (441 - 0) * 0 ;
   const camBack = sys(seg(t, 16.0, 16.8));
@@ -357,5 +358,6 @@ render(0);
 </script>
 </body>
 </html>
+
 
 
