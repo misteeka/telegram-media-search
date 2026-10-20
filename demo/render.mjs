@@ -4,7 +4,7 @@ import { pathToFileURL } from "node:url";
 import path from "node:path";
 
 const fps = 30;
-const duration = 19;
+const duration = 22;
 const out = process.argv[2] ?? "media-search-demo.mp4";
 
 const browser = await chromium.launch();
@@ -18,10 +18,11 @@ for (let f = 0; f < frames; f++) {
   await page.evaluate(t => window.render(t), f / fps);
   const buf = await page.screenshot({ type: "png" });
   if (!ff.stdin.write(buf)) await new Promise(r => ff.stdin.once("drain", r));
-  if ([20, 80, 150, 220, 290, 340, 380, 420, 460, 520].includes(f)) await page.screenshot({ path: `demo/frame-${f}.png` });
+  if ([20, 100, 150, 200, 300, 380, 430, 480, 540, 600, 640].includes(f)) await page.screenshot({ path: `demo/frame-${f}.png` });
 }
 ff.stdin.end();
 await new Promise(r => ff.on("close", r));
 await browser.close();
+
 
 

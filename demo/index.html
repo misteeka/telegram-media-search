@@ -108,19 +108,19 @@ svg { display: block; }
     <div id="chatTop"></div>
     <div id="navChat">
       <div class="c44 glass" style="left:16px" id="backC"></div>
-      <div class="pill glass" id="titlePill"><div class="t1">Jane Lee</div><div class="t2">last seen 3 hours ago</div></div>
+      <div class="pill glass" id="titlePill"><div class="t1">Semyon</div><div class="t2">last seen 3 hours ago</div></div>
       <div class="avs glass"><div></div></div>
     </div>
     <div id="composer">
       <div class="bt glass" id="clip"></div>
-      <div class="fld glass"><span>Message</span><span class="ttl">1mo</span><span id="timerI"></span></div>
+      <div class="fld glass"><span id="cmpText">Message</span><span class="ttl">1mo</span><span id="timerI"></span></div>
       <div class="bt glass" id="micB"></div>
     </div>
   </div>
   <div class="scene" id="profile">
     <div id="pHead">
       <div id="pAv"><svg width="104" height="104" viewBox="0 0 104 104"><circle cx="52" cy="40" r="20" fill="#e2b9a0"/><path d="M22 104 C22 74 82 74 82 104Z" fill="#161212"/><path d="M30 38 C30 12 74 12 74 38 C70 28 60 22 52 22 C42 22 34 28 30 38Z" fill="#1a1210"/></svg></div>
-      <div id="pName">Jane Lee</div>
+      <div id="pName">Semyon</div>
       <div id="pSub"><span id="shield"></span><span>online</span></div>
       <div id="pBtns"></div>
       <div id="pCard">
@@ -136,7 +136,7 @@ svg { display: block; }
     <div id="pPill" class="glass"><div class="sel"></div></div>
     <div id="navP">
       <div class="c44 glass" style="left:16px" id="backP"></div>
-      <div class="tp glass" id="tpill"><div class="t1">Jane Lee</div><div class="t2" style="color:#008bff">online</div></div>
+      <div class="tp glass" id="tpill"><div class="t1">Semyon</div><div class="t2" style="color:#008bff">online</div></div>
       <div class="ed glass">Edit</div>
     </div>
   </div>
@@ -231,47 +231,41 @@ function mk(html, appear) {
 }
 const items = [
   mk(`<div class="svc">Today</div>`),
-  mk(`<div class="row out"><div class="bub">hi jane how are you doing?<i class="pad" style="width:84px"></i><span class="time"><span>4:44 PM</span>${I.check2}</span><div class="tail">${A.tailOut}</div></div></div>`),
+  mk(`<div class="row out"><div class="bub">hey semyon, how's it going?<i class="pad" style="width:84px"></i><span class="time"><span>4:44 PM</span>${I.check2}</span><div class="tail">${A.tailOut}</div></div></div>`),
   mk(`<div class="unread">Unread Messages</div>`),
-  mk(`<div class="row in"><div class="bub" style="padding-bottom:8px">Hi Alex, long time no see! I'm good thanks for asking<div class="chip">${I.heart}<span class="av"></span></div><span class="time" style="bottom:6px"><span>5:31 PM</span></span></div></div>`),
-  mk(`<div class="row in"><div class="bub">How about you?<i class="pad" style="width:58px"></i><span class="time"><span>5:32 PM</span></span><div class="tail">${A.tailIn}</div></div></div>`),
-  mk(`<div class="row in"><div class="bub">Remember my dog I showed you a while ago? Can you send me that photo? 🐶<i class="pad" style="width:46px"></i><span class="time"><span>5:40 PM</span></span><div class="tail">${A.tailIn}</div></div></div>`, 0.7),
-  mk(`<div class="row out"><div class="bub media"><div class="ph" id="sentPh" style="width:250px;height:250px;background:linear-gradient(135deg,#d4fc79,#96e6a1);font-size:120px">🐕</div><div class="tchip"><span>5:41 PM</span>${I.check2}</div><div class="tail">${A.tailOut}</div></div></div>`, 16.5),
-];
+  mk(`<div class="row in"><div class="bub" style="padding-bottom:8px">Hi Alex! All good, just got back from a walk with my dog<div class="chip">${I.heart}<span class="av"></span></div><span class="time" style="bottom:6px"><span>5:31 PM</span></span></div></div>`),
+  mk(`<div class="row in"><div class="bub">He's a golden retriever, we got him last spring<i class="pad" style="width:58px"></i><span class="time"><span>5:32 PM</span></span></div></div>`),
+  mk(`<div class="row in"><div class="bub">Do you remember him? I showed you his photos a while ago 🐶<i class="pad" style="width:46px"></i><span class="time"><span>5:40 PM</span></span><div class="tail">${A.tailIn}</div></div></div>`, 0.7),
+  mk(`<div class="row out"><div class="bub">Yes, I remember! He's so cute 🥰<i class="pad" style="width:84px"></i><span class="time"><span>5:42 PM</span>${I.check2}</span><div class="tail">${A.tailOut}</div></div></div>`, 19.1),];
 items.forEach(it => { it.h = it.i.offsetHeight; });
-items[4].i.querySelector(".tail").style.display = "block";
-items[5].i.querySelector(".tail").style.display = "block";
-items[6].i.querySelector(".tail").style.display = "block";
-items[3].i.parentElement.style.display = "block";
 
-function pushProgress(t) { return sys(seg(t, 3.5, 4.3)) - sys(seg(t, 15.8, 16.5)); }
+function pushProgress(t) { return sys(seg(t, 3.5, 4.3)) - sys(seg(t, 16.3, 17.1)); }
 
 function touch(t, list) {
   let o = 0, x = 0, y = 0, s = 1;
-  for (const [a, tx, ty] of list) {
+  const sr = $("screen").getBoundingClientRect(), k = sr.width / 402;
+  for (const [a, getEl] of list) {
     const p = seg(t, a, a + 0.45);
-    if (p > 0 && p < 1) { o = Math.sin(p * Math.PI) ** 0.5; x = tx; y = ty; s = 1 - 0.15 * Math.sin(p * Math.PI); }
+    if (p > 0 && p < 1) {
+      const r = getEl().getBoundingClientRect();
+      o = Math.sin(p * Math.PI) ** 0.5; x = (r.left + r.width / 2 - sr.left) / k; y = (r.top + r.height / 2 - sr.top) / k; s = 1 - 0.15 * Math.sin(p * Math.PI);
+    }
   }
   const e = $("touch"); e.style.left = x + "px"; e.style.top = y + "px"; e.style.opacity = o * 0.9; e.style.transform = `scale(${s})`;
 }
-
-const QUERY = "Jane's dog";
+const QUERY = "Semyon's dog";
 function render(t) {
   itX.length = 0; let ax = 4; pits.forEach(e => { itX.push([ax, e.offsetWidth]); ax += e.offsetWidth; });
   const pp = pushProgress(t);
-  const camTop = lerp(441, 0, sys(seg(t, 2.4, 3.2))) + (441 - 0) * 0 ;
-  const camBack = sys(seg(t, 16.0, 16.8));
-  const cam = lerp(camTop, 441, camBack);
-  const S = 2.4;
-  $("cam").style.transform = `translate(${(1080 - 402 * S) / 2}px, ${40 - cam * S}px) scale(${S})`;
-
+  const S = 1.12;
+  $("cam").style.transform = `translate(${(1080 - 402 * S) / 2}px, ${(1080 - 874 * S) / 2}px) scale(${S})`;
   items.forEach(it => {
     if (it.appear === undefined) return;
     const p = sys(seg(t, it.appear, it.appear + 0.8));
-    it.w.style.height = (it.h * p) + "px";
+    it.w.style.height = p >= 0.999 ? "auto" : (it.w.firstChild.offsetHeight * p) + "px";
     it.i.style.opacity = clamp(p * 2.5);
     it.i.style.transform = `scale(${0.88 + 0.12 * p})`;
-    it.i.style.transformOrigin = it === items[6] ? "right bottom" : "left bottom";
+    it.i.style.transformOrigin = it === items[items.length - 1] ? "right bottom" : "left bottom";
   });
 
   const chat = $("chat");
@@ -335,7 +329,7 @@ function render(t) {
   $("tpill").style.opacity = clamp((scrollP - 0.6) * 3);
   $("tpill").style.transform = `translateX(-50%) translateY(${(1 - clamp((scrollP - 0.6) * 3)) * 8}px)`;
 
-  const vP = sys(seg(t, 14.1, 14.8)) - io(seg(t, 15.8, 16.3));
+  const vP = sys(seg(t, 14.1, 14.8)) - io(seg(t, 15.4, 15.9));
   const viewer = $("viewer");
   viewer.style.opacity = clamp(vP * 4);
   const vi = $("vImg"), first = cellPos(0), fp = clamp(vP), g0 = tiles[2].g;
@@ -347,9 +341,13 @@ function render(t) {
   vi.style.background = `linear-gradient(135deg, ${g0[0]}, ${g0[1]})`; vi.textContent = "🐕";
   $("vClose").style.opacity = $("vMore").style.opacity = $("vShare").style.opacity = clamp((vP - 0.7) * 3.3);
 
-  const sentBg = "linear-gradient(135deg,#d4fc79,#96e6a1)"; $("sentPh").style.background = sentBg;
+  const REPLY = "Yes, I remember! He\u0027s so cute \ud83e\udd70";
+  const rt = Math.floor(seg(t, 17.6, 18.8) * [...REPLY].length + 0.0001);
+  const typedReply = t < 19.1 ? [...REPLY].slice(0, rt).join("") : "";
+  $("cmpText").textContent = typedReply || "Message"; $("cmpText").style.color = typedReply ? "#000" : "#999";
+  $("micB").innerHTML = typedReply ? `<div style="width:34px;height:34px;border-radius:17px;background:#008bff;display:flex;align-items:center;justify-content:center;color:#fff">${stroke('<path d="M12 19V5M6 11l6-6 6 6"/>', 20)}</div>` : iconH(A.mic, 25);
 
-  touch(t, [[3.3, 201, 84], [5.1, 236, 551], [8.7, 200, 232], [14.0, 330, 344], [15.7, 38, 812]]);
+  touch(t, [[3.3, () => $("titlePill")], [5.1, () => pits[1]], [8.7, () => $("pSearch")], [14.0, () => tiles[2].el], [15.2, () => $("vClose")], [16.1, () => $("backP")], [19.0, () => $("micB")]]);
   $("status").style.color = vP > 0.5 ? "#fff" : "#000";
   $("status").style.filter = vP > 0.5 ? "invert(1)" : "none";
 }
@@ -358,6 +356,7 @@ render(0);
 </script>
 </body>
 </html>
+
 
 
 
