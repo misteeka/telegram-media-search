@@ -4,7 +4,8 @@ Concept animation: search thousands of photos in a Telegram chat by describing t
 
 Video: [media-search-demo.mp4](media-search-demo.mp4)
 
-Built as a deterministic HTML timeline (`demo/index.html`) rendered frame by frame with Playwright and ffmpeg (`demo/render.mjs`), modeled on the spring-curve (Telegram-iOS `makeSpringAnimation` bezier 0.23,1,0.32,1), shimmer-skeleton and shared-timeline approach of patsoooo/telegram-voice-transcription. Colors (accent #0088ff, white incoming and #e1ffc7 outgoing bubbles, glass nav pills) come from Telegram-iOS `DefaultDayPresentationTheme.swift`.
+Built as a deterministic HTML timeline (`demo/index.html`) rendered frame by frame with Playwright and ffmpeg (`demo/render.mjs`), UI is rebuilt from the Telegram iOS UI Kit (Figma): glass buttons, wallpaper pattern, bubble tails, status bar, bezel and metrics are taken from it; layout matches provided Telegram screenshots. Icons for call/video/mute/search/more/QR are hand-drawn (SF Symbols are not exported by Figma); photos are placeholders. Run `node demo/build-assets.mjs` then `node demo/render.mjs`.
 
 `npm i && npx playwright install chromium && node demo/render.mjs`
+
 

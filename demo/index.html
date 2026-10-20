@@ -3,242 +3,359 @@
 <head>
 <meta charset="utf-8">
 <style>
+@font-face { font-family: "Inter"; font-weight: 400; src: url("assets/inter-400.woff2"); }
+@font-face { font-family: "Inter"; font-weight: 500; src: url("assets/inter-500.woff2"); }
+@font-face { font-family: "Inter"; font-weight: 600; src: url("assets/inter-600.woff2"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("assets/inter-700.woff2"); }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { width: 1080px; height: 1080px; overflow: hidden; font-family: -apple-system, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", sans-serif; background: linear-gradient(135deg, #5ec2de 0%, #5b95de 55%, #8f8ad6 100%); position: relative; letter-spacing: -0.01em; }
-#phone { position: absolute; left: 126px; top: 40px; width: 414px; height: 900px; transform-origin: 0 0; transform: scale(2); border-radius: 62px; background: #1b1b1d; padding: 12px; box-shadow: 0 0 0 2px #3a3a3d inset, 0 30px 60px rgba(0,0,0,.35); }
-#screen { position: relative; width: 390px; height: 876px; border-radius: 50px; overflow: hidden; background: #8fc3b0; }
-#island { position: absolute; left: 145px; top: 11px; width: 100px; height: 30px; border-radius: 15px; background: #000; z-index: 90; }
-#status { position: absolute; top: 16px; left: 36px; font-size: 15px; font-weight: 600; z-index: 80; color: #000; }
-#statusR { position: absolute; top: 18px; right: 30px; z-index: 80; display: flex; gap: 5px; align-items: center; }
-#wall { position: absolute; inset: 0; background: linear-gradient(160deg, #a7d9ea 0%, #a3d5c4 55%, #b3d99a 100%); }
-#wall svg { position: absolute; inset: 0; opacity: .35; }
-#msgs { position: absolute; left: 0; right: 0; top: 0; height: 876px; }
-.bubble { position: absolute; max-width: 270px; padding: 7px 12px 6px; border-radius: 19px; font-size: 17px; line-height: 22px; color: #000; box-shadow: 0 1px 1px rgba(0,0,0,.08); }
-.in { background: #fff; left: 9px; border-bottom-left-radius: 6px; }
-.out { background: #e1ffc7; right: 9px; border-bottom-right-radius: 6px; }
-.in:before, .out:before { content: ""; position: absolute; bottom: 0; width: 12px; height: 14px; }
-.in:before { left: -5px; background: radial-gradient(circle at 0 0, transparent 11px, #fff 11.5px); border-bottom-right-radius: 0; clip-path: polygon(0 100%, 100% 0, 100% 100%); background: #fff; clip-path: path("M12 0 L12 14 L0 14 C6 14 11 8 12 0 Z"); }
-.out:before { right: -5px; background: #e1ffc7; clip-path: path("M0 0 L0 14 L12 14 C6 14 1 8 0 0 Z"); }
-.bubble .t { float: right; margin: 6px 0 0 10px; font-size: 12px; line-height: 14px; color: #77828c; }
-.out .t { color: #5ea35a; }
-.bubble .photo { width: 240px; height: 240px; margin: -4px -9px 6px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 120px; }
-.photoB { padding: 3px 3px 6px; }
-.photoB .cap { padding: 0 9px; }
-.glass { background: rgba(244,244,246,.78); backdrop-filter: blur(10px); box-shadow: 0 1px 6px rgba(0,0,0,.12), inset 0 0 0 .5px rgba(255,255,255,.8); }
-#nav { position: absolute; top: 0; left: 0; right: 0; height: 120px; z-index: 10; }
-#nav .circle { position: absolute; top: 58px; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; }
-#nav .pill { position: absolute; top: 58px; left: 122px; width: 146px; height: 44px; border-radius: 22px; text-align: center; font-weight: 600; font-size: 16px; padding-top: 5px; line-height: 19px; }
-#nav .pill small { display: block; font-weight: 400; font-size: 13px; color: #0088ff; }
-#nav .av { position: absolute; right: 16px; top: 58px; width: 44px; height: 44px; border-radius: 22px; background: linear-gradient(135deg,#f6b26b,#e67e5b); text-align: center; line-height: 44px; font-size: 24px; }
-#nav .back { left: 14px; }
-#nav .srch { right: 68px; }
-#composer { position: absolute; left: 0; right: 0; bottom: 0; height: 90px; }
-#dim { position: absolute; inset: 0; background: #000; opacity: 0; z-index: 20; }
-#sheet { position: absolute; left: 0; right: 0; top: 96px; bottom: 0; border-radius: 38px 38px 0 0; background: #f4f4f7; z-index: 30; overflow: hidden; box-shadow: 0 -4px 30px rgba(0,0,0,.18); }
-#grab { position: absolute; left: 175px; top: 6px; width: 40px; height: 5px; border-radius: 3px; background: #c4c4c9; }
-#sheetHead { position: absolute; top: 14px; left: 0; right: 0; height: 44px; text-align: center; font-weight: 600; font-size: 17px; line-height: 44px; }
-#sheetHead .x { position: absolute; left: 12px; top: 0; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; background: #fff; }
-#sbar { position: absolute; left: 12px; right: 12px; top: 70px; height: 44px; border-radius: 22px; background: rgba(118,118,128,.12); padding: 0 14px; font-size: 17px; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-#sbar .ph { color: #8e8d92; }
-#sbar .ai { margin-left: auto; font-size: 12px; font-weight: 600; color: #fff; background: linear-gradient(90deg, #0088ff, #8f5de5); padding: 4px 9px; border-radius: 12px; display: flex; gap: 4px; align-items: center; }
-#caret { display: inline-block; width: 2px; height: 22px; background: #0088ff; vertical-align: middle; margin-left: 1px; }
-#seg { position: absolute; left: 12px; right: 12px; top: 124px; height: 36px; border-radius: 18px; background: rgba(0,0,0,.06); display: flex; padding: 3px; }
-#seg div { flex: 1; text-align: center; font-size: 14px; font-weight: 500; line-height: 30px; border-radius: 15px; }
-#seg .on { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.14); font-weight: 600; }
-#info { position: absolute; left: 14px; right: 14px; top: 170px; height: 20px; font-size: 13px; color: #8e8e93; }
-#gridWrap { position: absolute; left: 0; right: 0; top: 196px; bottom: 0; overflow: hidden; }
-.tile { position: absolute; width: 96.5px; height: 96.5px; display: flex; align-items: center; justify-content: center; font-size: 48px; overflow: hidden; will-change: transform; }
-.tile .vid { position: absolute; right: 4px; top: 4px; font-size: 11px; font-weight: 600; color: #fff; background: rgba(0,0,0,.45); border-radius: 8px; padding: 1px 6px; }
-#skel { position: absolute; left: 0; right: 0; top: 196px; bottom: 0; background: #f4f4f7; }
-#skel .sk { position: absolute; background: #e3e3e8; overflow: hidden; }
-#skel .sk:after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.9) 50%, transparent 80%); transform: translateX(var(--sx, -100%)); }
-#scan { position: absolute; left: 0; right: 0; top: 196px; height: 3px; background: linear-gradient(90deg, transparent, #0088ff, #8f5de5, transparent); }
-#sparkle { position: absolute; left: 0; right: 0; top: 170px; text-align: center; font-size: 13px; font-weight: 600; color: #0088ff; }
-#viewer { position: absolute; inset: 0; background: #000; z-index: 45; opacity: 0; }
-#viewerImg { position: absolute; display: flex; align-items: center; justify-content: center; }
-#vbar { position: absolute; left: 0; right: 0; top: 0; height: 110px; background: rgba(20,20,20,.8); z-index: 2; }
-#vbar .ttl { position: absolute; left: 0; right: 0; top: 56px; text-align: center; color: #fff; font-weight: 600; font-size: 16px; line-height: 18px; }
-#vbar .ttl small { display: block; font-weight: 400; font-size: 12px; opacity: .6; }
-#vbar .done { position: absolute; left: 16px; top: 62px; color: #0088ff; font-size: 17px; }
-#vact { position: absolute; left: 0; right: 0; top: 440px; height: 80px; background: rgba(20,20,20,.8); display: flex; justify-content: space-between; padding: 14px 28px 0; }
-#vact .b { width: 44px; height: 44px; border-radius: 22px; background: #0088ff; display: flex; align-items: center; justify-content: center; }
-#vact .b.g { background: rgba(255,255,255,.14); }
+body { width: 1080px; height: 1080px; overflow: hidden; background: linear-gradient(135deg, #5ec2de 0%, #5b95de 55%, #8f8ad6 100%); font-family: "Inter", sans-serif; letter-spacing: -0.43px; }
+#cam { position: absolute; left: 0; top: 0; width: 402px; height: 874px; transform-origin: 0 0; }
+#screen { position: absolute; left: 0; top: 0; width: 402px; height: 874px; border-radius: 55px; overflow: hidden; background: #000; isolation: isolate; }
+#bezel { position: absolute; left: -24px; top: -23px; width: 450px; height: 920px; pointer-events: none; z-index: 200; }
+.scene { position: absolute; inset: 0; overflow: hidden; }
+.glass { background: rgba(247,247,247,.74); backdrop-filter: blur(22px) saturate(1.4); box-shadow: 0 8px 40px rgba(0,0,0,.12), inset 0 0 0 .5px rgba(255,255,255,.7); }
+svg { display: block; }
+.c44 { position: absolute; top: 62px; width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; color: #1a1a1a; }
+
+#status { position: absolute; left: 0; right: 0; top: 0; height: 62px; padding: 21px 16px 19px; display: flex; gap: 154px; z-index: 150; color: #000; }
+#status .tm { flex: 1; text-align: center; font-weight: 600; font-size: 17px; line-height: 22px; padding-top: 2px; letter-spacing: 0; }
+#status .lv { flex: 1; display: flex; gap: 7px; align-items: center; justify-content: center; height: 22px; padding-top: 1px; }
+
+/* chat */
+#chat { background: #8fc389; }
+#wall { position: absolute; inset: 0; background:
+  radial-gradient(70% 45% at 8% 10%, #cddba2 0, rgba(205,219,162,0) 100%),
+  radial-gradient(60% 50% at 100% 20%, #6fb08f 0, rgba(111,176,143,0) 100%),
+  radial-gradient(70% 40% at 100% 100%, #a1c37f 0, rgba(161,195,127,0) 100%),
+  radial-gradient(70% 40% at 0% 85%, #8fc08f 0, rgba(143,192,143,0) 100%),
+  #8dc58b; }
+#wallPat { position: absolute; left: -52px; top: 0; width: 507px; height: 873px; opacity: .13; }
+#chatTop { position: absolute; left: 0; right: 0; top: 0; height: 116px; background: linear-gradient(rgba(255,255,255,.28), rgba(255,255,255,0)); z-index: 5; }
+#msgs { position: absolute; left: 0; right: 0; bottom: 74px; display: flex; flex-direction: column; justify-content: flex-end; padding: 8px 8px 0; z-index: 2; }
+.mw { position: relative; flex: none; }
+.mi { position: relative; }
+.row { display: flex; padding: 2px 0; }
+.row.out { justify-content: flex-end; padding-left: 24px; }
+.row.in { padding-right: 24px; }
+.bub { position: relative; border-radius: 18px; padding: 4px 8px; max-width: 288px; font-size: 17px; line-height: 22px; color: #000; }
+.in .bub { background: #fff; } .out .bub { background: #e8fdd6; }
+.bub .pad { display: inline-block; height: 1px; }
+.bub .time { position: absolute; right: 12px; bottom: 4px; display: flex; gap: 3px; align-items: center; font-size: 11px; line-height: 12px; letter-spacing: 0; }
+.in .time { color: #a4a4a4; right: 10px; } .out .time { color: #55b84b; }
+.tail { position: absolute; bottom: 0; width: 13.62px; height: 32px; }
+.in .tail { left: -5.6px; color: #fff; } .out .tail { right: -5.6px; color: #e8fdd6; transform: scaleX(-1); }
+.svc { display: table; margin: 8px auto; padding: 3px 7px; border-radius: 12px; font-size: 13px; font-weight: 600; line-height: 18px; color: #fff; background: rgba(60,80,48,.42); backdrop-filter: blur(20px); letter-spacing: -.08px; }
+.unread { margin: 4px -8px; height: 33px; background: rgba(255,255,255,.72); text-align: center; line-height: 33px; font-size: 15px; color: #8a8a8e; letter-spacing: -.2px; }
+.chip { display: flex; width: fit-content; align-items: center; gap: 4px; margin-top: 4px; height: 32px; padding: 0 6px; border-radius: 16px; background: #0a84ff; }
+.chip .av { width: 24px; height: 24px; border-radius: 12px; background: linear-gradient(135deg, #d7e6f4, #7ba3c9); }
+.media { padding: 1px; border-radius: 18px; }
+.media .ph { border-radius: 17px; overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative; }
+.media .tchip { position: absolute; right: 8px; bottom: 6px; padding: 3px 7px; border-radius: 9px; background: rgba(0,0,0,.3); backdrop-filter: blur(12px); color: #fff; font-size: 11px; line-height: 12px; display: flex; gap: 3px; letter-spacing: 0; }
+#composer { position: absolute; left: 0; right: 0; bottom: 0; height: 74px; padding: 4px 28px 28px; display: flex; gap: 6px; align-items: flex-end; z-index: 6; }
+#composer .bt { width: 42px; height: 42px; border-radius: 21px; display: flex; align-items: center; justify-content: center; color: #1a1a1a; flex: none; }
+#composer .fld { flex: 1; height: 42px; border-radius: 24px; display: flex; align-items: center; padding: 0 6px 0 16px; font-size: 17px; color: #999; }
+#composer .fld .ttl { margin-left: auto; font-size: 15px; font-weight: 500; color: #727272; margin-right: 4px; letter-spacing: 0; }
+#navChat .pill { position: absolute; top: 62px; left: 50%; transform: translateX(-50%); height: 44px; border-radius: 22px; padding: 6px 16px; text-align: center; white-space: nowrap; }
+.pill .t1 { font-size: 15px; font-weight: 600; line-height: 18px; color: #333; letter-spacing: -.23px; }
+.pill .t2 { font-size: 12px; font-weight: 500; line-height: 14px; color: #999; letter-spacing: 0; }
+.avs { position: absolute; top: 62px; right: 16px; width: 44px; height: 44px; border-radius: 22px; padding: 3px; }
+.avs div { width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #f0d2bd, #a46f55); display: flex; align-items: center; justify-content: center; }
+
+/* profile */
+#profile { background: #f0eff4; transform: translateX(402px); box-shadow: -10px 0 30px rgba(0,0,0,.15); }
+#pHead { position: absolute; left: 0; right: 0; top: 0; }
+#pAv { position: absolute; left: 149px; top: 76px; width: 104px; height: 104px; border-radius: 52px; background: linear-gradient(160deg, #6a5348, #1d1613); overflow: hidden; }
+#pName { position: absolute; left: 0; right: 0; top: 190px; text-align: center; font-size: 28px; font-weight: 700; line-height: 34px; color: #1a1a1a; letter-spacing: .38px; }
+#pSub { position: absolute; left: 0; right: 0; top: 224px; display: flex; justify-content: center; gap: 4px; align-items: center; font-size: 15px; font-weight: 500; line-height: 20px; color: #999; letter-spacing: -.25px; }
+#pBtns { position: absolute; left: 16px; right: 16px; top: 282px; display: flex; gap: 8px; }
+#pBtns .b { flex: 1; height: 60px; border-radius: 24px; background: rgba(255,255,255,.88); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; color: #008bff; font-size: 12px; line-height: 16px; letter-spacing: 0; }
+#pCard { position: absolute; left: 16px; right: 16px; top: 373px; height: 140px; border-radius: 26px; background: #fff; }
+#pCard .l { position: absolute; left: 16px; font-size: 15px; line-height: 20px; color: #000; letter-spacing: -.2px; }
+#pCard .v { position: absolute; left: 16px; font-size: 17px; line-height: 22px; color: #3a8ae5; }
+#pCard .sep { position: absolute; left: 16px; right: 0; top: 70px; height: .5px; background: rgba(60,60,67,.2); }
+#pPill { position: absolute; top: 531px; height: 40px; border-radius: 20px; padding: 4px; display: flex; overflow: hidden; white-space: nowrap; z-index: 6; }
+#pPill .sel { position: absolute; top: 4px; height: 32px; border-radius: 16px; background: rgba(60,60,67,.12); }
+#pPill .it { position: relative; flex: none; height: 32px; padding: 0 16px; line-height: 32px; font-size: 17px; font-weight: 500; color: #000; letter-spacing: -.3px; }
+#pGift { position: absolute; left: 16px; right: 16px; top: 587px; height: 116px; border-radius: 26px; background: #fff; display: flex; align-items: center; justify-content: center; font-size: 64px; }
+#pGift i { position: absolute; left: 8px; top: 8px; width: 22px; height: 22px; border-radius: 11px; background: #5aa9f0; }
+#pSearch { position: absolute; left: 16px; right: 16px; height: 36px; border-radius: 18px; background: rgba(118,118,128,.12); display: flex; align-items: center; gap: 9px; padding: 0 14px; font-size: 17px; color: #999; overflow: hidden; white-space: nowrap; z-index: 5; }
+#pSearch .txt { color: #000; }
+#pSearch .caret { width: 2px; height: 20px; background: #008bff; margin-left: -8px; }
+#pSearch .ai { margin-left: auto; display: flex; align-items: center; gap: 4px; color: #008bff; font-size: 13px; font-weight: 600; }
+#pTop { position: absolute; left: 0; right: 0; top: 0; height: 122px; background: linear-gradient(#f0eff4 82%, rgba(240,239,244,0)); z-index: 7; opacity: 0; }
+#pPill { z-index: 8 !important; }
+#pGrid { position: absolute; left: 0; right: 0; bottom: 0; border-radius: 26px 26px 0 0; overflow: hidden; background: #f0eff4; z-index: 4; }
+.tile { position: absolute; width: 132.67px; height: 132.67px; display: flex; align-items: center; justify-content: center; font-size: 64px; overflow: hidden; will-change: transform; }
+#skel { position: absolute; inset: 0; background: #f0eff4; }
+#skel .sk { position: absolute; width: 132.67px; height: 132.67px; background: #e1e1e6; overflow: hidden; }
+#skel .sk:after { content: ""; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.85) 50%, transparent 80%); transform: translateX(var(--sx, -100%)); }
+#navP { z-index: 9; position: absolute; inset: 0; pointer-events: none; }
+#navP .tp { position: absolute; top: 62px; left: 50%; transform: translateX(-50%); height: 44px; border-radius: 22px; padding: 6px 16px; text-align: center; white-space: nowrap; }
+#navP .ed { position: absolute; top: 62px; right: 16px; height: 44px; border-radius: 22px; padding: 0 14px; display: flex; align-items: center; font-size: 17px; font-weight: 500; color: #1a1a1a; letter-spacing: 0; }
+
+/* viewer */
+#viewer { background: #000; opacity: 0; }
+#vImg { position: absolute; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+#viewer .c44 { background: rgba(60,60,60,.7); color: #fff; box-shadow: none; }
+#touch { position: absolute; width: 38px; height: 38px; margin: -19px 0 0 -19px; border-radius: 50%; background: rgba(40,40,40,.22); border: 1.5px solid rgba(255,255,255,.55); z-index: 180; opacity: 0; pointer-events: none; }
 </style>
 </head>
 <body>
-<div id="phone"><div id="screen">
-  <div id="island"></div><div id="status">9:41</div>
-  <div id="statusR">
-    <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2.5" width="3" height="9.5" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
-    <svg width="26" height="13" viewBox="0 0 26 13"><rect x=".5" y=".5" width="22" height="12" rx="3.5" fill="none" stroke="#000" opacity=".4"/><rect x="2" y="2" width="19" height="9" rx="2.2"/><rect x="24" y="4.5" width="1.6" height="4" rx=".8" opacity=".4"/></svg>
+<div id="cam"><div id="screen">
+  <div class="scene" id="chat">
+    <div id="wall"></div><img id="wallPat" src="assets/patterns_animals.svg">
+    <div id="msgs"></div>
+    <div id="chatTop"></div>
+    <div id="navChat">
+      <div class="c44 glass" style="left:16px" id="backC"></div>
+      <div class="pill glass" id="titlePill"><div class="t1">Jane Lee</div><div class="t2">last seen 3 hours ago</div></div>
+      <div class="avs glass"><div></div></div>
+    </div>
+    <div id="composer">
+      <div class="bt glass" id="clip"></div>
+      <div class="fld glass"><span>Message</span><span class="ttl">1mo</span><span id="timerI"></span></div>
+      <div class="bt glass" id="micB"></div>
+    </div>
   </div>
-  <div id="wall"><svg width="390" height="876"><defs><pattern id="p" width="60" height="60" patternUnits="userSpaceOnUse"><circle cx="10" cy="12" r="3" fill="none" stroke="#fff" stroke-width="1.5"/><path d="M34 10 l8 8 m0 -8 l-8 8" stroke="#fff" stroke-width="1.5"/><path d="M12 40 q8 -10 16 0" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="40" y="40" width="10" height="10" rx="3" fill="none" stroke="#fff" stroke-width="1.5"/></pattern></defs><rect width="390" height="876" fill="url(#p)"/></svg></div>
-  <div id="msgs"></div>
-  <div id="nav">
-    <div class="circle glass back"><svg width="12" height="20" viewBox="0 0 12 20"><path d="M10 2 L2 10 L10 18" fill="none" stroke="#0088ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    <div class="pill glass">Semyon<small>online</small></div>
-    <div class="circle glass srch" id="searchBtn"><svg width="20" height="20" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="#0088ff" stroke-width="2.2"/><path d="M13 13 L18 18" stroke="#0088ff" stroke-width="2.2" stroke-linecap="round"/></svg></div>
-    <div class="av">🧑‍🦰</div>
+  <div class="scene" id="profile">
+    <div id="pHead">
+      <div id="pAv"><svg width="104" height="104" viewBox="0 0 104 104"><circle cx="52" cy="40" r="20" fill="#e2b9a0"/><path d="M22 104 C22 74 82 74 82 104Z" fill="#161212"/><path d="M30 38 C30 12 74 12 74 38 C70 28 60 22 52 22 C42 22 34 28 30 38Z" fill="#1a1210"/></svg></div>
+      <div id="pName">Jane Lee</div>
+      <div id="pSub"><span id="shield"></span><span>online</span></div>
+      <div id="pBtns"></div>
+      <div id="pCard">
+        <div class="l" style="top:13px">mobile</div><div class="v" style="top:33px">+1 650 213 7379</div>
+        <div class="sep"></div>
+        <div class="l" style="top:83px">username</div><div class="v" style="top:104px">@Samleemobbin</div>
+        <div id="qr" style="position:absolute;right:16px;top:98px"></div>
+      </div>
+      <div id="pGift">🧸<i></i></div>
+    </div>
+    <div id="pTop"></div><div id="pGrid"><div id="gridIn" style="position:absolute;inset:0"></div><div id="skel"></div></div>
+    <div id="pSearch"></div>
+    <div id="pPill" class="glass"><div class="sel"></div></div>
+    <div id="navP">
+      <div class="c44 glass" style="left:16px" id="backP"></div>
+      <div class="tp glass" id="tpill"><div class="t1">Jane Lee</div><div class="t2" style="color:#008bff">online</div></div>
+      <div class="ed glass">Edit</div>
+    </div>
   </div>
-  <div id="dim"></div>
-  <div id="sheet">
-    <div id="grab"></div>
-    <div id="sheetHead"><div class="x"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M2 2 L14 14 M14 2 L2 14" stroke="#000" stroke-width="2.2" stroke-linecap="round"/></svg></div>Search in Chat</div>
-    <div id="sbar"><svg width="18" height="18" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="#8e8d92" stroke-width="2.2"/><path d="M13 13 L18 18" stroke="#8e8d92" stroke-width="2.2" stroke-linecap="round"/></svg><span id="q"></span><span id="caretWrap"><span id="caret"></span></span><span class="ph" id="ph">Search media</span><span class="ai"><svg width="11" height="11" viewBox="0 0 24 24"><path d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0Z" fill="#fff"/></svg>AI</span></div>
-    <div id="seg"><div class="on">All</div><div>Photos</div><div>Videos</div></div>
-    <div id="info"></div>
-    <div id="gridWrap"></div>
-    <div id="skel"></div>
-    <div id="scan"></div>
-    <div id="sparkle"></div>
+  <div class="scene" id="viewer">
+    <div id="vImg"></div>
+    <div class="c44" style="left:16px" id="vClose"></div>
+    <div class="c44" style="right:16px;top:62px" id="vMore"></div>
+    <div class="c44" style="left:16px;top:790px" id="vShare"></div>
   </div>
-  <div id="viewer">
-    <div id="vbar"><div class="done">Done</div><div class="ttl">Semyon's dog<small>14 March 2024 at 18:22</small></div></div>
-    <div id="viewerImg"></div>
-    <div id="vact"><div class="b g"><svg width="20" height="22" viewBox="0 0 20 22"><path d="M10 14 V2 M5 7 L10 2 L15 7 M2 11 V19 H18 V11" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="b" id="send"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M11 18 V4 M4 10 L11 3 L18 10" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
-  </div>
-</div></div>
-
+  <div id="status"><div class="tm">9:41</div><div class="lv" id="lv"></div></div>
+  <div id="touch"></div>
+</div><img id="bezel" src="assets/bezel.png"></div>
+<script src="assets.js"></script>
 <script>
+const A = ASSETS;
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const seg = (t, a, b) => clamp((t - a) / (b - a));
 const bez = (x1, y1, x2, y2) => p => {
-  p = clamp(p);
-  let lo = 0, hi = 1, s = p;
-  for (let i = 0; i < 30; i++) { s = (lo + hi) / 2; const x = 3 * (1 - s) * (1 - s) * s * x1 + 3 * (1 - s) * s * s * x2 + s * s * s; if (x < p) lo = s; else hi = s; }
-  return 3 * (1 - s) * (1 - s) * s * y1 + 3 * (1 - s) * s * s * y2 + s * s * s;
+  p = clamp(p); let lo = 0, hi = 1, s = p;
+  for (let i = 0; i < 32; i++) { s = (lo + hi) / 2; const x = 3 * (1 - s) ** 2 * s * x1 + 3 * (1 - s) * s * s * x2 + s ** 3; if (x < p) lo = s; else hi = s; }
+  return 3 * (1 - s) ** 2 * s * y1 + 3 * (1 - s) * s * s * y2 + s ** 3;
 };
-const sys = bez(0.23, 1.0, 0.32, 1.0);
-const inout = bez(0.42, 0, 0.58, 1);
+const sys = bez(0.23, 1, 0.32, 1), io = bez(0.42, 0, 0.58, 1);
 const lerp = (a, b, p) => a + (b - a) * p;
 const $ = id => document.getElementById(id);
+const sized = (svg, w, h) => svg.replace(/width="[^"]*"/, `width="${w}"`).replace(/height="[^"]*"/, `height="${h}"`);
+const iconH = (svg, h) => { const m = svg.match(/viewBox="[\d. -]+ ([\d.]+) ([\d.]+)"/); return sized(svg, h * m[1] / m[2], h); };
+const stroke = (inner, s = 24) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+const I = {
+  search: s => stroke('<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L20.5 20.5"/>', s),
+  xmark: s => stroke('<path d="M5 5L19 19M19 5L5 19"/>', s),
+  phone: s => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z"/></svg>`,
+  video: s => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="6" width="14" height="12" rx="3.5"/><path d="M17.5 10.5L22 7.8v8.4l-4.5-2.7z"/></svg>`,
+  bell: s => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5c-3.3 0-5.8 2.5-5.8 5.8v3.3c0 .8-.3 1.5-.8 2.1L4 15.3c-.5.7 0 1.7.9 1.7h14.2c.9 0 1.4-1 .9-1.7l-1.4-1.6c-.5-.6-.8-1.3-.8-2.1V8.3c0-3.3-2.5-5.8-5.8-5.8zM9.7 18.5a2.4 2.4 0 004.6 0z"/></svg>`,
+  more: s => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><circle cx="4.5" cy="12" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="19.5" cy="12" r="2.2"/></svg>`,
+  qr: s => stroke('<rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><path d="M14 14h3M20 14v0M14 18v3M18 18h3M21 21v0"/>', s),
+  sparkle: s => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1c1 7 4 10 11 11-7 1-10 4-11 11-1-7-4-10-11-11C8 11 11 8 12 1z"/></svg>`,
+  share: s => stroke('<path d="M12 15V3M7.5 7.5L12 3l4.5 4.5M5 11v8a2 2 0 002 2h10a2 2 0 002-2v-8"/>', s),
+  check2: `<svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6l3 3 6-7M6 8.5l1 .5 6-7.5"/></svg>`,
+  shield: `<svg width="17" height="19" viewBox="0 0 17 19"><path d="M8.5 0L16 2.5v6.2c0 4.4-3 8.4-7.5 10.3C4 17.100 1 13.100 1 8.700V2.500z" fill="#2f7be0"/><text x="8.5" y="12.500" font-size="10" font-weight="700" fill="#fff" text-anchor="middle" font-family="Inter" letter-spacing="0">1</text></svg>`,
+  heart: `<svg width="18" height="16" viewBox="0 0 24 22"><path d="M12 21C-6 9 4-2 12 5c8-7 18 4 0 16z" fill="#ff3b30"/></svg>`,
+};
+
+$("lv").innerHTML = A.cell + A.wifi + A.battery;
+$("backC").innerHTML = iconH(A.back, 19);
+$("backP").innerHTML = iconH(A.back, 19);
+$("clip").innerHTML = iconH(A.paperclip, 24);
+$("micB").innerHTML = iconH(A.mic, 25);
+$("timerI").innerHTML = iconH(A.timer, 22).replace("<svg", '<svg style="color:#727272;margin-top:1px"');
+$("vClose").innerHTML = I.xmark(20);
+$("vMore").innerHTML = I.more(22);
+$("vShare").innerHTML = I.share(22);
+$("shield").innerHTML = I.shield;
+$("qr").innerHTML = `<div style="color:#3a8ae5">${I.qr(26)}</div>`;
+const btnDefs = [["call", I.phone], ["video", I.video], ["mute", I.bell], ["search", I.search], ["more", I.more]];
+$("pBtns").innerHTML = btnDefs.map(([l, f]) => `<div class="b">${f(26)}<span>${l}</span></div>`).join("");
 
 const grads = [["#f6d365", "#fda085"], ["#a1c4fd", "#c2e9fb"], ["#d4fc79", "#96e6a1"], ["#fbc2eb", "#a6c1ee"], ["#ffecd2", "#fcb69f"], ["#84fab0", "#8fd3f4"], ["#e0c3fc", "#8ec5fc"], ["#fddb92", "#d1fdff"]];
 const others = ["🏔️", "🍕", "🌅", "🚗", "☕", "🎂", "🌳", "🏖️", "📄", "🍣", "🎸", "🏙️", "🐱", "🌸", "🧳", "🎮", "🚲", "🍔", "⛵", "📚", "🐦", "🛋️", "🎄", "🧁", "🐴"];
 const dogs = ["🐕", "🐶", "🐩", "🦮", "🐕‍🦺", "🐶"];
-const N = 72, dogIdx = [3, 9, 14, 22, 31, 47];
+const N = 90, dogIdx = [2, 7, 13, 19, 26, 40];
 const tiles = [];
 for (let i = 0; i < N; i++) {
   const d = dogIdx.indexOf(i), g = grads[(i * 5 + 3) % grads.length];
-  tiles.push({ i, dog: d >= 0, rank: d, emoji: d >= 0 ? dogs[d] : others[(i * 7 + 2) % others.length], g, vid: i % 11 === 4 });
+  tiles.push({ i, dog: d >= 0, rank: d, emoji: d >= 0 ? dogs[d] : others[(i * 7 + 2) % others.length], g });
 }
-const grid = $("gridWrap");
+const gridIn = $("gridIn");
 tiles.forEach(t => {
-  const e = document.createElement("div");
-  e.className = "tile";
+  const e = document.createElement("div"); e.className = "tile";
   e.style.background = `linear-gradient(135deg, ${t.g[0]}, ${t.g[1]})`;
-  e.innerHTML = t.emoji + (t.vid ? '<span class="vid">0:12</span>' : "");
-  grid.appendChild(e); t.el = e;
+  e.textContent = t.emoji; gridIn.appendChild(e); t.el = e;
 });
 const skel = $("skel");
-for (let r = 0; r < 4; r++) for (let c = 0; c < 4; c++) {
+for (let r = 0; r < 5; r++) for (let c = 0; c < 3; c++) {
   const s = document.createElement("div"); s.className = "sk";
-  s.style.cssText = `left:${c * 97.5}px;top:${r * 97.5}px;width:96.5px;height:96.5px`;
-  skel.appendChild(s);
+  s.style.cssText = `left:${c * 134.67}px;top:${r * 134.67}px`; skel.appendChild(s);
 }
+const G = 134.67;
+const cellPos = n => ({ x: (n % 3) * G, y: Math.floor(n / 3) * G });
 
-const QUERY = "Semyon's dog";
-const G = 97.5;
-const cellPos = n => ({ x: (n % 4) * G, y: Math.floor(n / 4) * G });
+const pill = $("pPill");
+const labels = ["Gifts 🧸", "Media", "Files", "Links", "Music", "Voice"];
+labels.forEach(l => { const e = document.createElement("div"); e.className = "it"; e.textContent = l; pill.appendChild(e); });
+const pits = [...pill.querySelectorAll(".it")];
+const itX = [];
 
-const bubbles = [
-  { side: "in", y: 130, text: "Hey! We're finally adopting a puppy 🥳", time: "14:02", at: -10 },
-  { side: "out", y: 192, text: "No way, congrats!!", time: "14:03 ✓✓", at: -10 },
-  { side: "in", y: 254, text: "Remember my dog I showed to you a while ago? Send me that photo, I can't find it 😅", time: "14:05", at: 0.6 },
-];
 const msgs = $("msgs");
-bubbles.forEach(b => {
-  const e = document.createElement("div");
-  e.className = "bubble " + b.side;
-  e.innerHTML = b.text + `<span class="t">${b.time}</span>`;
-  msgs.appendChild(e); b.el = e;
-});
-const photoBubble = document.createElement("div");
-photoBubble.className = "bubble out photoB";
-photoBubble.innerHTML = '<div class="photo" style="background:linear-gradient(135deg,#f6d365,#fda085);margin:0 0 4px">🐕</div><div class="cap">Here he is! <span class="t">14:06 ✓✓</span></div>';
-msgs.appendChild(photoBubble);
+const ticks = `<span class="time"><span>4:44 PM</span>${I.check2}</span>`;
+function mk(html, appear) {
+  const w = document.createElement("div"); w.className = "mw"; const i = document.createElement("div"); i.className = "mi"; i.innerHTML = html; w.appendChild(i);
+  msgs.appendChild(w); return { w, i, appear, h: 0 };
+}
+const items = [
+  mk(`<div class="svc">Today</div>`),
+  mk(`<div class="row out"><div class="bub">hi jane how are you doing?<i class="pad" style="width:84px"></i><span class="time"><span>4:44 PM</span>${I.check2}</span><div class="tail">${A.tailOut}</div></div></div>`),
+  mk(`<div class="unread">Unread Messages</div>`),
+  mk(`<div class="row in"><div class="bub" style="padding-bottom:8px">Hi Alex, long time no see! I'm good thanks for asking<div class="chip">${I.heart}<span class="av"></span></div><span class="time" style="bottom:6px"><span>5:31 PM</span></span></div></div>`),
+  mk(`<div class="row in"><div class="bub">How about you?<i class="pad" style="width:58px"></i><span class="time"><span>5:32 PM</span></span><div class="tail">${A.tailIn}</div></div></div>`),
+  mk(`<div class="row in"><div class="bub">Remember my dog I showed you a while ago? Can you send me that photo? 🐶<i class="pad" style="width:46px"></i><span class="time"><span>5:40 PM</span></span><div class="tail">${A.tailIn}</div></div></div>`, 0.7),
+  mk(`<div class="row out"><div class="bub media"><div class="ph" id="sentPh" style="width:250px;height:250px;background:linear-gradient(135deg,#d4fc79,#96e6a1);font-size:120px">🐕</div><div class="tchip"><span>5:41 PM</span>${I.check2}</div><div class="tail">${A.tailOut}</div></div></div>`, 16.5),
+];
+items.forEach(it => { it.h = it.i.offsetHeight; });
+items[4].i.querySelector(".tail").style.display = "block";
+items[5].i.querySelector(".tail").style.display = "block";
+items[6].i.querySelector(".tail").style.display = "block";
+items[3].i.parentElement.style.display = "block";
 
-function setBubble(el, y, p) {
-  el.style.top = y + "px";
-  el.style.opacity = clamp(p * 3);
-  el.style.transform = `translateY(${(1 - p) * 40}px) scale(${0.9 + 0.1 * p})`;
+function pushProgress(t) { return sys(seg(t, 3.5, 4.3)) - sys(seg(t, 15.8, 16.5)); }
+
+function touch(t, list) {
+  let o = 0, x = 0, y = 0, s = 1;
+  for (const [a, tx, ty] of list) {
+    const p = seg(t, a, a + 0.45);
+    if (p > 0 && p < 1) { o = Math.sin(p * Math.PI) ** 0.5; x = tx; y = ty; s = 1 - 0.15 * Math.sin(p * Math.PI); }
+  }
+  const e = $("touch"); e.style.left = x + "px"; e.style.top = y + "px"; e.style.opacity = o * 0.9; e.style.transform = `scale(${s})`;
 }
 
+const QUERY = "Jane's dog";
 function render(t) {
-  const lift = -sys(seg(t, 13.1, 13.9)) * 232;
-  msgs.style.transform = `translateY(${lift}px)`;
-  bubbles.forEach(b => setBubble(b.el, b.y, b.at < 0 ? 1 : sys(seg(t, b.at, b.at + 0.6))));
-  setBubble(photoBubble, 314, t >= 13.1 ? sys(seg(t, 13.1, 13.9)) : 0);
-  photoBubble.style.display = t >= 13.0 ? "block" : "none";
+  const pp = pushProgress(t);
+  const camTop = lerp(441, 0, sys(seg(t, 2.4, 3.2))) + (441 - 0) * 0 ;
+  const camBack = sys(seg(t, 16.0, 16.8));
+  const cam = lerp(camTop, 441, camBack);
+  const S = 2.4;
+  $("cam").style.transform = `translate(${(1080 - 402 * S) / 2}px, ${40 - cam * S}px) scale(${S})`;
 
-  const sheetP = sys(seg(t, 2.7, 3.4)) - inout(seg(t, 12.6, 13.2));
-  $("sheet").style.transform = `translateY(${(1 - sheetP) * 800}px)`;
-  $("dim").style.opacity = sheetP * 0.35;
-
-  const typed = Math.floor(seg(t, 4.3, 5.9) * QUERY.length + 0.0001);
-  $("q").textContent = QUERY.slice(0, typed);
-  $("ph").style.display = t > 4.2 ? "none" : "inline";
-  $("caretWrap").style.display = t > 3.6 && t < 8.0 && (Math.floor(t * 2.5) % 2 === 0 || (t > 4.3 && t < 6.0)) ? "inline" : "none";
-
-  let scroll = 0;
-  if (t >= 3.4 && t < 4.3) scroll = sys(seg(t, 3.4, 4.3)) * 520;
-  if (t >= 4.3) scroll = 520 * (1 - inout(seg(t, 4.3, 5.4)));
-  const blur = t >= 3.4 && t < 4.6 ? Math.max(0, 1 - Math.abs(seg(t, 3.4, 4.6) - 0.2) * 1.2) * 2.5 : 0;
-
-  const fade = seg(t, 8.2, 9.0);
-  const resultsPos = sys(seg(t, 8.4, 9.5));
-  const skelAmt = seg(t, 6.4, 6.7) - seg(t, 8.0, 8.2);
-  tiles.forEach(tl => {
-    const base = cellPos(tl.i), fin = cellPos(tl.dog ? tl.rank : tl.i);
-    let x = base.x, y = base.y - scroll, o = 1, s = 1;
-    if (tl.dog) {
-      x = lerp(base.x, fin.x, resultsPos);
-      y = lerp(base.y - scroll, fin.y, resultsPos);
-      if (t >= 7.6 && t < 8.6) s = 1 + 0.06 * Math.sin(seg(t, 7.6, 8.6) * Math.PI);
-    } else { o = 1 - sys(fade); s = 1 - 0.25 * sys(fade); }
-    const el = tl.el;
-    el.style.transform = `translate(${x}px,${y}px) scale(${s})`;
-    el.style.opacity = o * (1 - clamp(skelAmt));
-    el.style.filter = blur ? `blur(${blur}px)` : "none";
+  items.forEach(it => {
+    if (it.appear === undefined) return;
+    const p = sys(seg(t, it.appear, it.appear + 0.8));
+    it.w.style.height = (it.h * p) + "px";
+    it.i.style.opacity = clamp(p * 2.5);
+    it.i.style.transform = `scale(${0.88 + 0.12 * p})`;
+    it.i.style.transformOrigin = it === items[6] ? "right bottom" : "left bottom";
   });
 
-  skel.style.opacity = clamp(skelAmt);
-  skel.style.display = skelAmt > 0 ? "block" : "none";
+  const chat = $("chat");
+  chat.style.transform = `translateX(${-110 * pp}px)`;
+  chat.style.filter = `brightness(${1 - 0.25 * pp})`;
+  $("profile").style.transform = `translateX(${402 * (1 - pp)}px)`;
+  $("profile").style.boxShadow = pp > 0 && pp < 1 ? "-10px 0 30px rgba(0,0,0,.15)" : "none";
+  $("titlePill").style.transform = `translateX(-50%) scale(${t > 3.3 && t < 3.55 ? 0.95 : 1})`;
+
+  const tabSel = sys(seg(t, 5.1, 5.7));
+  const scrollP = sys(seg(t, 5.7, 6.9));
+  const scroll = 413 * scrollP;
+  const head = $("pHead");
+  head.style.transform = `translateY(${-scroll}px)`;
+  $("pGift").style.opacity = 1 - clamp(scrollP * 2.5);
+  const expand = sys(seg(t, 5.8, 6.9));
+  const pillW = lerp(itX[1][0] + itX[1][1] + 4, 370, expand);
+  const pillStart = lerp(116, 16, expand);
+  pill.style.left = pillStart + "px"; pill.style.width = pillW + "px";
+  const sx = lerp(itX[0][0], itX[1][0], tabSel), sw = lerp(itX[0][1], itX[1][1], tabSel);
+  const selEl = pill.querySelector(".sel"); selEl.style.left = sx + "px"; selEl.style.width = sw + "px";
+  const pillY = 531 - scroll;
+  pill.style.top = pillY + "px";
+  pits.forEach((e, k) => { e.style.opacity = k <= 1 ? 1 : clamp((expand - 0.2) * 2); });
+
+  const sBar = $("pSearch");
+  const sp = sys(seg(t, 7.4, 8.2));
+  sBar.style.top = (pillY + 40 + 8) + "px";
+  sBar.style.opacity = sp; sBar.style.transform = `scaleY(${0.4 + 0.6 * sp}) scaleX(${0.9 + 0.1 * sp})`;
+  const typed = Math.floor(seg(t, 9.2, 10.8) * QUERY.length + 0.0001);
+  const focused = t > 8.8;
+  const aiPulse = t > 11 && t < 12.3 ? 0.55 + 0.45 * Math.sin(t * 9) : 1;
+  const sOpen = t > 12.2 ? "" : "";
+  sBar.innerHTML = `${I.search(16).replace("<svg", '<svg style="color:#8e8e93"')}` + (typed > 0 ? `<span class="txt">${QUERY.slice(0, typed)}</span>` : `<span>Search media</span>`) +
+    (focused && t < 10.9 && Math.floor(t * 2.2) % 2 === 0 ? `<span class="caret"></span>` : "") +
+    `<span class="ai" style="opacity:${aiPulse}">${I.sparkle(13)}AI</span>`;
+  const gridTop = pillY + 40 + 8 + 44 * sp - (1 - sp) * 0 + 4;
+  const gridEl = $("pGrid");
+  gridEl.style.top = gridTop + "px";
+  gridEl.style.opacity = clamp((scrollP - 0.35) * 3);
+
+  let gscroll = 0;
+  if (t >= 6.4 && t < 7.2) gscroll = sys(seg(t, 6.4, 7.2)) * 1100;
+  else if (t >= 7.2) gscroll = 1100 * (1 - io(seg(t, 7.2, 8.2)));
+  const blur = t >= 6.4 && t < 8.2 ? Math.sin(seg(t, 6.4, 8.2) * Math.PI) * 3 : 0;
+  const fade = sys(seg(t, 12.2, 13.0)), res = sys(seg(t, 12.5, 13.6));
+  const skelAmt = seg(t, 11.0, 11.3) - seg(t, 12.2, 12.4);
+  tiles.forEach(tl => {
+    const b = cellPos(tl.i), f = cellPos(tl.dog ? tl.rank : tl.i);
+    let x = b.x, y = b.y - gscroll, o = 1, s = 1;
+    if (tl.dog) { x = lerp(b.x, f.x, res); y = lerp(b.y - gscroll, f.y, res); }
+    else { o = 1 - fade; s = 1 - 0.2 * fade; }
+    tl.el.style.transform = `translate(${x}px,${y}px) scale(${s})`;
+    tl.el.style.opacity = o * (1 - clamp(skelAmt));
+    tl.el.style.filter = blur > 0.05 ? `blur(${blur}px)` : "none";
+  });
+  skel.style.opacity = clamp(skelAmt); skel.style.display = skelAmt > 0 ? "block" : "none";
   skel.style.setProperty("--sx", (((t * 1.1) % 1) * 300 - 100) + "%");
-  const scan = $("scan");
-  scan.style.opacity = clamp(skelAmt);
-  scan.style.transform = `translateY(${((t * 1.4) % 1) * 300}px)`;
-  const sp = $("sparkle");
-  sp.style.display = skelAmt > 0 ? "block" : "none";
-  sp.style.opacity = clamp(skelAmt);
-  sp.textContent = "✦ Understanding “" + QUERY + "”…";
 
-  const info = $("info");
-  if (t < 6.4) info.textContent = t < 4.3 ? "4,812 photos and videos" : "Searching 4,812 photos and videos";
-  else if (t >= 8.2) info.innerHTML = '<b style="color:#000">6 results</b> · dog · Semyon';
-  info.style.opacity = t >= 6.4 && t < 8.2 ? 0 : 1;
+  $("pTop").style.opacity = clamp(scrollP * 3);
+  $("tpill").style.opacity = clamp((scrollP - 0.6) * 3);
+  $("tpill").style.transform = `translateX(-50%) translateY(${(1 - clamp((scrollP - 0.6) * 3)) * 8}px)`;
 
-  const vP = sys(seg(t, 10.4, 11.1)) - inout(seg(t, 12.2, 12.6));
+  const vP = sys(seg(t, 14.1, 14.8)) - io(seg(t, 15.8, 16.3));
   const viewer = $("viewer");
-  viewer.style.opacity = clamp(vP * 3);
-  $("vbar").style.opacity = clamp((vP - 0.6) * 2.5);
-  $("vact").style.opacity = clamp((vP - 0.6) * 2.5);
-  const vi = $("viewerImg"), fp = clamp(vP), first = cellPos(0), sy = 96 + 196;
-  const g = grads[(3 * 5 + 3) % grads.length];
-  vi.style.left = lerp(first.x, 0, fp) + "px";
-  vi.style.top = lerp(first.y + sy, 110, fp) + "px";
-  vi.style.width = lerp(96.5, 390, fp) + "px";
-  vi.style.height = lerp(96.5, 330, fp) + "px";
-  vi.style.fontSize = lerp(48, 170, fp) + "px";
-  vi.style.background = `linear-gradient(135deg, ${g[0]}, ${g[1]})`;
-  vi.textContent = "🐕";
-  $("send").style.transform = t > 12.05 && t < 12.3 ? "scale(.9)" : "scale(1)";
+  viewer.style.opacity = clamp(vP * 4);
+  const vi = $("vImg"), first = cellPos(0), fp = clamp(vP), g0 = tiles[2].g;
+  const fy = gridTop + first.y;
+  vi.style.left = lerp(first.x + 2 * 134.67 * 0 + 2 * 134.67, 0, fp) + "px";
+  vi.style.top = lerp(fy, 236, fp) + "px";
+  vi.style.width = lerp(132.67, 402, fp) + "px"; vi.style.height = lerp(132.67, 402, fp) + "px";
+  vi.style.fontSize = lerp(64, 190, fp) + "px";
+  vi.style.background = `linear-gradient(135deg, ${g0[0]}, ${g0[1]})`; vi.textContent = "🐕";
+  $("vClose").style.opacity = $("vMore").style.opacity = $("vShare").style.opacity = clamp((vP - 0.7) * 3.3);
 
-  $("searchBtn").style.background = t > 2.2 && t < 2.8 ? "rgba(0,136,255,.25)" : "rgba(244,244,246,.78)";
+  const sentBg = "linear-gradient(135deg,#d4fc79,#96e6a1)"; $("sentPh").style.background = sentBg;
+
+  touch(t, [[3.3, 201, 84], [5.1, 236, 551], [8.7, 200, 232], [14.0, 330, 344], [15.7, 38, 812]]);
+  $("status").style.color = vP > 0.5 ? "#fff" : "#000";
+  $("status").style.filter = vP > 0.5 ? "invert(1)" : "none";
 }
 window.render = render;
 render(0);
 </script>
 </body>
 </html>
+
 
